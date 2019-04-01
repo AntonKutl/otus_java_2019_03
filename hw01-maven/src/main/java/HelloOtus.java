@@ -7,8 +7,5 @@ public class HelloOtus {
                                    .trimResults()
                                    .omitEmptyStrings()
                                    .split("Hello, Otus"));
-
-
-
     }
 }
