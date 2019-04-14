@@ -4,8 +4,8 @@ public class DIYarrayList <T> implements List <T>{
     private Object [] elements;
     private int size=0;
 
-    public DIYarrayList(int i) {
-        elements=new Object[i];
+    public DIYarrayList(int sizeArray) {
+        elements=new Object[sizeArray];
     }
 
     @Override
@@ -41,10 +41,10 @@ public class DIYarrayList <T> implements List <T>{
     @Override
     public boolean add(T t) {
         if (elements.length==size){
-            elements=Arrays.copyOf(elements,elements.length+1);
+            elements=Arrays.copyOf(elements,elements.length*2);
         }
         elements [size]=t;
-        size++;
+        size=size+1;
         return true;
     }
 
@@ -89,9 +89,12 @@ public class DIYarrayList <T> implements List <T>{
     }
 
     @Override
-    public T set(int index, T element) {
-        Object temp=elements [index];
-        elements [index]=element;
+    public T set(int numberItem, T element) {
+        if (numberItem>size){
+            add(element);
+        }
+        Object temp=elements [numberItem];
+        elements [numberItem]=element;
         return (T) temp;
     }
 
@@ -134,7 +137,11 @@ public class DIYarrayList <T> implements List <T>{
 
     @Override
     public String toString() {
-        return Arrays.toString(elements);
+        String temp="";
+        for (int i = 0; i <size ; i++) {
+            temp=temp+String.valueOf(elements[i])+", ";
+        }
+        return temp;
     }
 
     private class ListItr extends Itr implements ListIterator {
@@ -172,7 +179,6 @@ public class DIYarrayList <T> implements List <T>{
 
         @Override
         public void set(Object o) {
-            //throw new  UnsupportedOperationException();
             DIYarrayList.this.set(lastRet, (T) o);
         }
 
@@ -199,7 +205,10 @@ public class DIYarrayList <T> implements List <T>{
             cursor = i+ 1;
             return elements[lastRet = i];
         }
+    }
 
+    public void removeNull(){
+        elements=Arrays.copyOf(elements,size);
     }
 
 

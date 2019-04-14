@@ -10,11 +10,19 @@ public class Main {
         List <Integer> list2 =new DIYarrayList<>(list.size());
         boolean c=Collections.addAll(list2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 
-        Collections.sort(list,null);
-        System.out.println(list.toString());
-
         Collections.copy(list2,list);
         System.out.println(list2.toString());
 
+        ((DIYarrayList<Integer>) list).removeNull();
+
+        Collections.sort(list,null);
+        System.out.println(list.toString());
+
+        List<Integer> list3 = new DIYarrayList<>(6);
+        System.out.println(String.format("list size: %d, and list output: %s", list3.size(), list3.toString()));
+        list3.set(5, 53);
+        System.out.println(String.format("list size: %d, and list output: %s", list3.size(), list3.toString()));
+
     }
+
 }
