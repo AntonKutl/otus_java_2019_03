@@ -3,6 +3,7 @@ package ru.otus.homework;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.logging.Logger;
 
 public class UserProxy  {
 
@@ -15,6 +16,7 @@ public class UserProxy  {
 
     static class DemoInvocationHandler implements InvocationHandler {
         private final DemoInterface myClass;
+        private Logger log=Logger.getLogger(UserProxy.class.getName());
 
 
         DemoInvocationHandler(DemoInterface myClass) {
@@ -29,7 +31,7 @@ public class UserProxy  {
             method.invoke(myClass, args);
             for (Method temp : methods) {
                 if (temp.getAnnotation(Log.class) != null) {
-                    System.out.println ("Метод: "+temp.getName()+" Параметр: "+temp.);
+                    log.info("Метод: "+temp.getName()+" Параметр: ");
                 }
             }
 
