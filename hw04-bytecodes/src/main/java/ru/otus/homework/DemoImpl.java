@@ -4,7 +4,12 @@ public class DemoImpl implements DemoInterface {
 
     @Log
     public void calculation(int param) {
-        System.out.println(param);
+
+    }
+
+    @Log
+    public void calculation2(String i) {
+
     }
 
 }
