@@ -7,6 +7,6 @@ public class Main {
         DemoInterface demoInterface=UserProxy.createMyClass();
         demoInterface.calculation(1);
         demoInterface.calculation2("Второй метод");
-        demoInterface.calculation(2);
+        demoInterface.calculation3( true);
     }
 }
