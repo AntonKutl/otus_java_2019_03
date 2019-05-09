@@ -3,9 +3,7 @@ package ru.otus.homework;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class UserProxy {
@@ -18,18 +16,19 @@ public class UserProxy {
     }
 
     static class DemoInvocationHandler implements InvocationHandler {
-        private DemoInterface myClass;
-        private Logger log = Logger.getLogger(UserProxy.class.getName());
+        DemoInterface myClass;
+        Logger log = Logger.getLogger(UserProxy.class.getName());
         Method[] methods;
-        List<Method> methodLog = new ArrayList();
-
+        Set<String> methodLog = new HashSet<>();
 
         DemoInvocationHandler(DemoInterface myClass) {
             this.myClass = myClass;
             methods = myClass.getClass().getMethods();
+            System.out.println(Arrays.toString(methods));
             for (Method temp : methods) {
                 if (temp.getAnnotation(Log.class) != null) {
-                    methodLog.add(temp);
+                    methodLog.add(temp.getName());
+
                 }
             }
         }
@@ -37,9 +36,8 @@ public class UserProxy {
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 
-            for (Method temp : methodLog) {
-                if (temp.getName() == method.getName())
-                    log.info("Метод: " + method.getName() + " Параметр: " + Arrays.toString(args));
+            if (methodLog.contains(method.getName())) {
+                log.info("Метод: " + method.getName() + " Параметр: " + Arrays.toString(args));
             }
             return method.invoke(myClass, args);
         }
