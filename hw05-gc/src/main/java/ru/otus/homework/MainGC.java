@@ -5,6 +5,7 @@ import ru.otus.homework.GCTest.GCTest;
 import java.lang.management.ManagementFactory;
 
 public class MainGC {
+
     public static void main(String... args) throws InterruptedException {
         System.out.println("Starting pid: " + ManagementFactory.getRuntimeMXBean().getName());
         GCTest.run();
@@ -17,6 +18,8 @@ public class MainGC {
      являться самым быстрым, но время простоя может достигать  1700 ms, что не хорошо для некоторых приложений. Serial GC
      орентирован на системы с небольшими ресурсами. Время работы CMS получилось самое большое, около 10 мин что намного
       хуже G1 при чуть большем времени простоя, поэтому G1 предпочтительнее его.
+
+
     */
 
 
