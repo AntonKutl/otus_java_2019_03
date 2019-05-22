@@ -17,6 +17,7 @@ public class ATMImpl implements ATM {
         }
     }
 
+
     @Override
     public void setMoney(int[] money) {
         for (int tempInt : money) {
@@ -28,11 +29,11 @@ public class ATMImpl implements ATM {
     }
 
     @Override
-    public int [] getMoney(int money) {
-        List <Integer> tempSum =new ArrayList<>();
-        int sum=0;
-        int sumMoney=money;
-        for (int i = list.size()-1; i >= 0; i--) {
+    public int[] getMoney(int money) {
+        List<Integer> tempSum = new ArrayList<>();
+        int sum = 0;
+        int sumMoney = money;
+        for (int i = list.size() - 1; i >= 0; i--) {
 
             while (money >= list.get(i).valueCell() && list.get(i).size() > 0) {
                 money = money - list.get(i).valueCell();
@@ -40,11 +41,13 @@ public class ATMImpl implements ATM {
                 tempSum.add(list.get(i).valueCell());
             }
         }
-        for (Integer temp:tempSum) {
-            sum=sum+temp;
+        for (Integer temp : tempSum) {
+            sum = sum + temp;
         }
         System.out.println(sum);
-        if (sumMoney!=sum){throw new RuntimeException("Не хватает банкнот в ячейках");}
+        if (sumMoney != sum) {
+            throw new RuntimeException("Не хватает банкнот в ячейках");
+        }
         return tempSum.stream().mapToInt(i -> i).toArray();
     }
 
