@@ -8,12 +8,10 @@ public class CellImpl implements Cell {
         this.value = par;
     }
 
-
     @Override
     public void setBanknote() {
         account++;
     }
-
 
     @Override
     public int getBanknote() {
@@ -25,7 +23,6 @@ public class CellImpl implements Cell {
     public int valueCell() {
         return value;
     }
-
 
     @Override
     public int size() {
