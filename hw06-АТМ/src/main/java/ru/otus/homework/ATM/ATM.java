@@ -4,7 +4,7 @@ public interface ATM {
 
     int[] getMoney(int money);
 
-    void setMoney(int[] money);
+    void addMoney(int[] money);
 
     int printBalance();
 }

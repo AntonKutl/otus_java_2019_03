@@ -1,68 +1,66 @@
 package ru.otus.homework.ATM;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
+import java.util.*;
 
 public class ATMImpl implements ATM {
 
-    private List<Cell> list = new ArrayList<>();
-    private int[] cells;
+    private Set<Cell> set = new TreeSet<>();
+
     public ATMImpl(int[] cells) {
-        Arrays.sort(cells);
-        this.cells = cells;
         for (int temp : cells) {
-            list.add(new CellImpl(temp));
+            set.add(new CellImpl(temp));
         }
+        System.out.println();
     }
 
 
     @Override
-    public void setMoney(int[] money) {
+    public void addMoney(int[] money) {
         for (int tempInt : money) {
-            for (Cell tempCell : list) {
-                if (tempInt == tempCell.valueCell())
-                    tempCell.setBanknote();
+            for (Cell tempCell : set) {
+                if (tempInt == tempCell.nominalCell())
+                    tempCell.addBanknote();
             }
         }
     }
-
 
     @Override
     public int[] getMoney(int money) {
         List<Integer> tempSum = new ArrayList<>();
         int sum = 0;
         int sumMoney = money;
-
-        for (int i = list.size() - 1; i >= 0; i--) {
-
-            while (money >= list.get(i).valueCell() && list.get(i).size() > 0) {
-                money = money - list.get(i).valueCell();
-                list.get(i).getBanknote();
-                tempSum.add(list.get(i).valueCell());
+        for (Cell tempCell : set) {
+            tempCell.createMementoCell();
+            while (money >= tempCell.nominalCell() && tempCell.size() > 0) {
+                money = money - tempCell.nominalCell();
+                tempCell.getBanknote();
+                tempSum.add(tempCell.nominalCell());
+                sum = sum + tempCell.nominalCell();
             }
-        }
-
-        for (Integer temp : tempSum) {
-            sum = sum + temp;
         }
 
         System.out.println(sum);
         if (sumMoney != sum) {
-            throw new RuntimeException("Не хватает банкнот в ячейках");
-        }
+            for (Cell tempCell : set) {
+                tempCell.undoMementoCell();
+            }
+            System.out.println("Не хватает банкнот. Отмена операции");
+            int[] temp = {0};
+            return temp;
+        } else return tempSum.stream().mapToInt(i -> i).toArray();
 
-        return tempSum.stream().mapToInt(i -> i).toArray();
     }
 
     @Override
     public int printBalance() {
+        /*for (Cell temp:set) {
+            System.out.println(temp.nominalCell()+"->"+temp.size());
+        }*/
+
         int balance = 0;
-
-        for (Cell temp : list) {
-            //System.out.println(temp.valueCell() + "->" + temp.size());
-            balance = balance + temp.size() * temp.valueCell();
+        for (Cell temp : set) {
+            balance = balance + temp.size() * temp.nominalCell();
         }
-
         return balance;
     }
 }
