@@ -10,7 +10,6 @@ public class ATMImpl implements ATM {
         for (int temp : cells) {
             set.add(new CellImpl(temp));
         }
-        System.out.println();
     }
 
 
@@ -38,8 +37,7 @@ public class ATMImpl implements ATM {
                 sum = sum + tempCell.nominalCell();
             }
         }
-
-        System.out.println(sum);
+        //System.out.println(sum);
         if (sumMoney != sum) {
             for (Cell tempCell : set) {
                 tempCell.undoMementoCell();
@@ -63,4 +61,5 @@ public class ATMImpl implements ATM {
         }
         return balance;
     }
+
 }

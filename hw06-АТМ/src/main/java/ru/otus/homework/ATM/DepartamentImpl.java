@@ -1,18 +1,48 @@
 package ru.otus.homework.ATM;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class DepartamentImpl implements Departament {
-    Set <ATM> setAtm=new TreeSet<>();
+    List<ATM> listAtm = new ArrayList<>();
+    MementoDepartament mementoDepartament;
 
     @Override
     public void addATM(int[] cells) {
-        setAtm.add(new ATMImpl(cells));
+        listAtm.add(new ATMImpl(cells));
     }
 
     @Override
-    public int collectSum() {
-        return 0;
+    public int balance(Visit visit) {
+        return visit.sum(this);
     }
+
+    public ATM getAtm(int i) {
+        return listAtm.get(i);
+    }
+
+    public List<ATM> getListAtm() {
+        return listAtm;
+    }
+
+    private class MementoDepartament {
+        List<ATM> listAtmMemento=new ArrayList<>();
+
+        private MementoDepartament() {
+
+        }
+
+        private List<ATM> getAccountMemento() {
+            return listAtmMemento;
+        }
+
+    }
+
+    public void createMementoDepartament() {
+        mementoDepartament = new MementoDepartament();
+    }
+
+    public void undoMementoDepartament(){
+
+    }
+
 }

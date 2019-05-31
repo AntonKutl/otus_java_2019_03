@@ -1,5 +1,7 @@
 package ru.otus.homework.ATM;
 
+import java.util.Set;
+
 public interface ATM {
 
     int[] getMoney(int money);
@@ -7,4 +9,5 @@ public interface ATM {
     void addMoney(int[] money);
 
     int printBalance();
+
 }
