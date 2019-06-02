@@ -6,7 +6,4 @@ public interface Cell {
     void addBanknote();
     int nominalCell();
     int size();
-    void createMementoCell();
-    void undoMementoCell();
-
 }

@@ -4,7 +4,6 @@ import java.util.*;
 
 public class DepartamentImpl implements Departament {
     List<ATM> listAtm = new ArrayList<>();
-    MementoDepartament mementoDepartament;
 
     @Override
     public void addATM(int[] cells) {
@@ -12,37 +11,30 @@ public class DepartamentImpl implements Departament {
     }
 
     @Override
-    public int balance(Visit visit) {
-        return visit.sum(this);
+    public int balance() {
+        int sum=0;
+        for (ATM atm:listAtm) {
+          sum=sum+atm.accept(new SpecificVisitor());
+        }
+        return sum;
     }
 
     public ATM getAtm(int i) {
         return listAtm.get(i);
     }
 
-    public List<ATM> getListAtm() {
-        return listAtm;
-    }
-
-    private class MementoDepartament {
-        List<ATM> listAtmMemento=new ArrayList<>();
-
-        private MementoDepartament() {
-
+    public void undoMemento(){
+        for (ATM atm:listAtm) {
+            atm.undoMementoATM();
         }
+    }
 
-        private List<ATM> getAccountMemento() {
-            return listAtmMemento;
+    public void createMemento(){
+        for (ATM atm:listAtm) {
+            atm.createMementoATM();
         }
-
-    }
-
-    public void createMementoDepartament() {
-        mementoDepartament = new MementoDepartament();
-    }
-
-    public void undoMementoDepartament(){
-
     }
 
 }
+
+

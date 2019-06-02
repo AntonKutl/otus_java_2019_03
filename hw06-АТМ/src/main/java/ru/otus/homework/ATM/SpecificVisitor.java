@@ -1,13 +1,9 @@
 package ru.otus.homework.ATM;
 
-public class SpecificVisitor implements Visit{
-    int sum=0;
+class SpecificVisitor implements Visit{
 
     @Override
-    public int sum(Departament departament) {
-        for (ATM tempAtm:departament.getListAtm()) {
-            sum=sum+tempAtm.printBalance();
-        }
-        return sum;
+    public int visit(ATM atm) {
+        return atm.printBalance();
     }
 }

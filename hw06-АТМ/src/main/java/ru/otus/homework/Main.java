@@ -2,7 +2,6 @@ package ru.otus.homework;
 
 import ru.otus.homework.ATM.Departament;
 import ru.otus.homework.ATM.DepartamentImpl;
-import ru.otus.homework.ATM.SpecificVisitor;
 
 
 public class Main {
@@ -15,6 +14,8 @@ public class Main {
         int[] money2 = {500, 5000 };
         int[] money3 = {500, 100, 1000, 50, 1000, 50};
 
+        //Сохранение состояния
+
         Departament departament=new DepartamentImpl();
 
         //Добавдение банкоматов в депортамент
@@ -22,30 +23,32 @@ public class Main {
         departament.addATM(cells2);
         departament.addATM(cells3);
 
+
+        //Добавление денег в банкоматы
+        departament.getAtm(0).addMoney(money1);
+        departament.getAtm(1).addMoney(money2);
+        departament.getAtm(2).addMoney(money3);
+
+
+        //Отображение остатков в группе банкоматов
+        System.out.println(departament.balance());
+
+        //Сохранение состояния
+        departament.createMemento();
+
         //Добавление денег в банкоматы
         departament.getAtm(0).addMoney(money1);
         departament.getAtm(1).addMoney(money2);
         departament.getAtm(2).addMoney(money3);
 
         //Отображение остатков в группе банкоматов
-        System.out.println("Общий баланс банкоматов: "+departament.balance(new SpecificVisitor()));
+        System.out.println(departament.balance());
 
-        //Сохранение состояния депортамента
-        departament.createMementoDepartament();
-
-        //Изьятие денег с банкомата
-        departament.getAtm(0).getMoney(10);
-        departament.getAtm(0).getMoney(500);
-        departament.getAtm(0).getMoney(50);
+        departament.undoMemento();
 
         //Отображение остатков в группе банкоматов
-        System.out.println("Общий баланс банкоматов: "+departament.balance(new SpecificVisitor()));
+        System.out.println(departament.balance());
 
-        //Востановление состояния всех АТМ
-        departament.undoMementoDepartament();
-
-        //Отображение остатков в группе банкоматов
-        System.out.println("Общий баланс банкоматов: "+departament.balance(new SpecificVisitor()));
 
     }
 }
