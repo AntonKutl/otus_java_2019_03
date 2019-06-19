@@ -26,14 +26,11 @@ public class JdbcTemplateImpl implements JdbcTemplate {
         Field[] fields = objectData.getClass().getDeclaredFields();
         for (Field tempField : fields) {
             tempField.setAccessible(true);
-            if (tempField.getAnnotation(Id.class) != null) {
-                valueField.append("?");
-                nameField.append(tempField.getName());
-            } else {
-                valueField.append(",?");
-                nameField.append("," + tempField.getName());
-            }
+            valueField.append("?,");
+            nameField.append(tempField.getName()+",");
         }
+        valueField.setLength(valueField.length()-1);
+        nameField.setLength(nameField.length()-1);
 
         try (PreparedStatement pst = connection.prepareStatement("insert into " + objectData.getClass().getSimpleName() +
                 "(" + nameField + " ) values (" + valueField + ")")) {
