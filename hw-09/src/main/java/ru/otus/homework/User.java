@@ -5,11 +5,16 @@ public class User {
     long id;
     String name;
     int age;
+    int rs;
 
-    public User(long id, String name, int age) {
+    public User() {
+    }
+
+    public User(long id, String name, int age, int rs) {
         this.id = id;
         this.name = name;
         this.age = age;
+        this.rs=rs;
     }
 
     @Override
@@ -18,6 +23,7 @@ public class User {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", age=" + age +
+                ", rs=" + rs +
                 '}';
     }
 }

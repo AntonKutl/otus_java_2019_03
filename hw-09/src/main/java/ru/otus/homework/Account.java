@@ -6,6 +6,9 @@ public class Account {
     String type;
     int rest;
 
+    public Account() {
+    }
+
     public Account(long no, String type, int rest) {
         this.no = no;
         this.type = type;
