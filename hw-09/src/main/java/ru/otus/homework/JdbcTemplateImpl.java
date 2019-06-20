@@ -3,11 +3,11 @@ package ru.otus.homework;
 import java.lang.reflect.Field;
 import java.sql.*;
 
-public class JdbcTemplateImpl implements JdbcTemplate {
+public class JdbcTemplateImpl<T> implements JdbcTemplate<T> {
     private static final String URL = "jdbc:h2:mem:";
     private Connection connection;
 
-    public JdbcTemplateImpl() throws SQLException {
+    public <T> JdbcTemplateImpl() throws SQLException {
         this.connection = DriverManager.getConnection(URL);
         this.connection.setAutoCommit(false);
     }
@@ -20,17 +20,17 @@ public class JdbcTemplateImpl implements JdbcTemplate {
     }
 
     @Override
-    public void update(Object objectData) throws IllegalAccessException, SQLException {
+    public void update(T objectData) throws IllegalAccessException, SQLException {
         StringBuilder valueField = new StringBuilder();
         StringBuilder nameField = new StringBuilder();
         Field[] fields = objectData.getClass().getDeclaredFields();
         for (Field tempField : fields) {
             tempField.setAccessible(true);
             valueField.append("?,");
-            nameField.append(tempField.getName()+",");
+            nameField.append(tempField.getName() + ",");
         }
-        valueField.setLength(valueField.length()-1);
-        nameField.setLength(nameField.length()-1);
+        valueField.setLength(valueField.length() - 1);
+        nameField.setLength(nameField.length() - 1);
 
         try (PreparedStatement pst = connection.prepareStatement("insert into " + objectData.getClass().getSimpleName() +
                 "(" + nameField + " ) values (" + valueField + ")")) {
@@ -46,12 +46,37 @@ public class JdbcTemplateImpl implements JdbcTemplate {
                 System.out.println(ex.getMessage());
             }
         }
-
-
     }
 
     @Override
-    public Object load(long id, Class clazz) throws SQLException, IllegalAccessException, InstantiationException {
+    public T load(long id, Class clazz) throws SQLException, IllegalAccessException, InstantiationException {
+        try (PreparedStatement pst = this.connection.prepareStatement("select * from " + clazz.getSimpleName() + " where " + nameID(clazz) + "  = ?")) {
+            pst.setObject(1, id);
+            return transformation(pst, clazz);
+        }
+    }
+
+    private T transformation(PreparedStatement pst, Class clazz) throws IllegalAccessException, InstantiationException, SQLException {
+        T object = (T) clazz.newInstance();
+        try (ResultSet rs = pst.executeQuery()) {
+            Field[] fields = clazz.getDeclaredFields();
+            if (rs.next()) {
+                for (Field field : fields)
+                    if (field.getType() == String.class) {
+                        field.set(object, rs.getString(field.getName()));
+                    } else if (field.getType() == int.class) {
+                        field.set(object, rs.getInt(field.getName()));
+                    } else if (field.getType() == long.class) {
+                        field.set(object, rs.getLong(field.getName()));
+                    }
+            }
+        }
+
+        return object;
+    }
+
+
+    private String nameID(Class clazz){
         String nameId = "";
         Field[] fields = clazz.getDeclaredFields();
         for (Field tempField : fields) {
@@ -60,36 +85,7 @@ public class JdbcTemplateImpl implements JdbcTemplate {
                 nameId = tempField.getName();
             }
         }
-        Object object = clazz.newInstance();
-        try (PreparedStatement pst = this.connection.prepareStatement("select * from " + clazz.getSimpleName() + " where " + nameId + "  = ?")) {
-            pst.setInt(1, Math.toIntExact(id));
-            try (ResultSet rs = pst.executeQuery()) {
-                if (rs.next()) {
-                    for (Field field : fields) {
-                        switch (field.getType().getSimpleName()) {
-                            case "String":
-                                field.set(object, rs.getString(field.getName()));
-                                break;
-                            case "int":
-                                field.set(object, rs.getInt(field.getName()));
-                                break;
-                            case "long":
-                                field.set(object, rs.getLong(field.getName()));
-                                break;
-                            case "float":
-                                field.set(object, rs.getFloat(field.getName()));
-                                break;
-
-
-                        }
-
-                    }
-                }
-            }
-
-
-        }
-        return object;
+        return nameId;
     }
 }
 
