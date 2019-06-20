@@ -2,12 +2,17 @@ package ru.otus.homework;
 
 import java.lang.reflect.Field;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JdbcTemplateImpl<T> implements JdbcTemplate<T> {
     private static final String URL = "jdbc:h2:mem:";
     private Connection connection;
+    private Map <Class,StringBuilder> nameFieldMap=new HashMap<>();
+    private Map <Class,StringBuilder> valueFieldMap=new HashMap<>();
 
-    public <T> JdbcTemplateImpl() throws SQLException {
+
+    public JdbcTemplateImpl() throws SQLException {
         this.connection = DriverManager.getConnection(URL);
         this.connection.setAutoCommit(false);
     }
@@ -21,19 +26,13 @@ public class JdbcTemplateImpl<T> implements JdbcTemplate<T> {
 
     @Override
     public void update(T objectData) throws IllegalAccessException, SQLException {
-        StringBuilder valueField = new StringBuilder();
-        StringBuilder nameField = new StringBuilder();
-        Field[] fields = objectData.getClass().getDeclaredFields();
-        for (Field tempField : fields) {
-            tempField.setAccessible(true);
-            valueField.append("?,");
-            nameField.append(tempField.getName() + ",");
+        if (nameFieldMap.get(objectData.getClass())==null){
+            getNameField(objectData);
         }
-        valueField.setLength(valueField.length() - 1);
-        nameField.setLength(nameField.length() - 1);
+        Field[] fields = objectData.getClass().getDeclaredFields();
 
         try (PreparedStatement pst = connection.prepareStatement("insert into " + objectData.getClass().getSimpleName() +
-                "(" + nameField + " ) values (" + valueField + ")")) {
+                "(" + nameFieldMap.get(objectData.getClass())+ " ) values (" + valueFieldMap.get(objectData.getClass())+ ")")) {
             Savepoint savePoint = this.connection.setSavepoint("savePointName");
             for (int i = 1; i < fields.length + 1; i++) {
                 pst.setObject(i, fields[i - 1].get(objectData));
@@ -71,12 +70,11 @@ public class JdbcTemplateImpl<T> implements JdbcTemplate<T> {
                     }
             }
         }
-
         return object;
     }
 
 
-    private String nameID(Class clazz){
+    private String nameID(Class clazz) {
         String nameId = "";
         Field[] fields = clazz.getDeclaredFields();
         for (Field tempField : fields) {
@@ -87,6 +85,25 @@ public class JdbcTemplateImpl<T> implements JdbcTemplate<T> {
         }
         return nameId;
     }
+
+    private void getNameField(T objectData){
+        StringBuilder valueField = new StringBuilder();
+        StringBuilder nameField = new StringBuilder();
+        Field[] fields = objectData.getClass().getDeclaredFields();
+        for (Field tempField : fields) {
+            tempField.setAccessible(true);
+            valueField.append("?,");
+            nameField.append(tempField.getName() + ",");
+        }
+        valueField.setLength(valueField.length() - 1);
+        nameField.setLength(nameField.length() - 1);
+        nameFieldMap.put(objectData.getClass(),nameField);
+        valueFieldMap.put(objectData.getClass(),valueField);
+
+    }
+
+
+
 }
 
 
