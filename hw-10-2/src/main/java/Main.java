@@ -16,7 +16,7 @@ public class Main {
         JdbcTemplate jdbcTemplate=new JdbcTemplateImpl();
         jdbcTemplate.create(user1);
         jdbcTemplate.update(user1);
-        jdbcTemplate.load(1,user1.getClass());
+        System.out.println(jdbcTemplate.load(1,user1.getClass()));
 
     }
 }

@@ -50,8 +50,8 @@ public class JdbcTemplateImpl<T> implements JdbcTemplate<T> {
         T result;
         try (Session session = sessionFactory.openSession()) {
             System.out.println(session.load(clazz, id));
+            return session.load(clazz, id);
         }
-        return null;
     }
 }
 
