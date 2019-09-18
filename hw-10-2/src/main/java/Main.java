@@ -1,4 +1,8 @@
-import ru.otus.homework.*;
+import ru.otus.homework.dao.DAOUser;
+import ru.otus.homework.dao.DAOUserImpl;
+import ru.otus.homework.model.AddressDataSet;
+import ru.otus.homework.model.PhoneDataSet;
+import ru.otus.homework.model.User;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,10 +17,10 @@ public class Main {
         user1.setAge(30);
         user1.setAddress(addressDataSet);
         user1.setPhoneDataSet(phoneDataSet);
-        JdbcTemplate jdbcTemplate=new JdbcTemplateImpl();
-        jdbcTemplate.create(user1);
-        jdbcTemplate.update(user1);
-        System.out.println(jdbcTemplate.load(1,user1.getClass()));
+        DAOUser DAOUser =new DAOUserImpl();
+        DAOUser.create(user1);
+        DAOUser.update(user1);
+        System.out.println(DAOUser.load(1,user1.getClass()));
 
     }
 }

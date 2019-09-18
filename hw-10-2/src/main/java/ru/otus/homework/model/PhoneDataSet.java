@@ -1,4 +1,4 @@
-package ru.otus.homework;
+package ru.otus.homework.model;
 
 import javax.persistence.*;
 @Entity

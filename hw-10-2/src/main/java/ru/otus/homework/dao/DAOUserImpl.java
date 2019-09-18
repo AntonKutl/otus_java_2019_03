@@ -1,4 +1,4 @@
-package ru.otus.homework;
+package ru.otus.homework.dao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -7,15 +7,17 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import ru.otus.homework.model.AddressDataSet;
+import ru.otus.homework.model.PhoneDataSet;
 
-public class JdbcTemplateImpl<T> implements JdbcTemplate<T> {
+public class DAOUserImpl<T> implements DAOUser<T> {
     private static final String URL = "jdbc:h2:mem:testDB;DB_CLOSE_DELAY=-1";
     private SessionFactory sessionFactory;
     private StandardServiceRegistry serviceRegistry;
 
 
 
-    public JdbcTemplateImpl() {
+    public DAOUserImpl() {
 
         Configuration configuration = new Configuration()
                 .configure("hibernate.cfg.xml");

@@ -1,4 +1,4 @@
-package ru.otus.homework;
+package ru.otus.homework.model;
 
 import javax.persistence.*;
 
@@ -28,7 +28,7 @@ public class AddressDataSet {
 
     @Override
     public String toString() {
-        return "ru.otus.homework.AddressDataSet{" +
+        return "ru.otus.homework.model.AddressDataSet{" +
                 "street='" + street + '\'' +
                 '}';
     }
