@@ -16,6 +16,7 @@ public class User {
     @Column(name = "age")
     private int age;
     @OneToOne(cascade = CascadeType.ALL)
+
     private AddressDataSet address;
 
     @OneToMany(cascade = CascadeType.ALL)
