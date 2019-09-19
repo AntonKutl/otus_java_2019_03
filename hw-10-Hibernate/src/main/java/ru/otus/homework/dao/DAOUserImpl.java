@@ -9,9 +9,9 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import ru.otus.homework.model.AddressDataSet;
 import ru.otus.homework.model.PhoneDataSet;
+import ru.otus.homework.model.User;
 
 public class DAOUserImpl<T> implements DAOUser<T> {
-    private static final String URL = "jdbc:h2:mem:testDB;DB_CLOSE_DELAY=-1";
     private SessionFactory sessionFactory;
     private StandardServiceRegistry serviceRegistry;
 
@@ -23,13 +23,8 @@ public class DAOUserImpl<T> implements DAOUser<T> {
                 .configure("hibernate.cfg.xml");
         serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties()).build();
-
-    }
-
-    @Override
-    public void create(T objectData) {
         Metadata metadata = new MetadataSources(serviceRegistry)
-                .addAnnotatedClass(objectData.getClass())
+                .addAnnotatedClass(User.class)
                 .addAnnotatedClass(AddressDataSet.class)
                 .addAnnotatedClass(PhoneDataSet.class)
                 .getMetadataBuilder()
@@ -39,16 +34,17 @@ public class DAOUserImpl<T> implements DAOUser<T> {
     }
 
     @Override
-    public void update(T objectData) {
+    public void save(T objectData) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.save(objectData);
             session.getTransaction().commit();
+            session.close();
         }
     }
 
     @Override
-    public <T> T load(long id, Class<T> clazz) {
+    public <T> T read(long id, Class<T> clazz) {
         T result;
         try (Session session = sessionFactory.openSession()) {
             System.out.println(session.load(clazz, id));

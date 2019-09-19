@@ -24,8 +24,6 @@ public class PhoneDataSet {
 
     @Override
     public String toString() {
-        return "PhoneDataSet{" +
-                "number='" + number + '\'' +
-                '}';
+        return  number;
     }
 }

@@ -17,10 +17,11 @@ public class Main {
         user1.setAge(30);
         user1.setAddress(addressDataSet);
         user1.setPhoneDataSet(phoneDataSet);
-        DAOUser DAOUser =new DAOUserImpl();
-        DAOUser.create(user1);
-        DAOUser.update(user1);
-        System.out.println(DAOUser.load(1,user1.getClass()));
+        DAOUser daoUserUser =new DAOUserImpl();
+        daoUserUser.save(user1);
+        //daoUserUser.read(1,User.class);
+        System.out.println("------------");
+        System.out.println(daoUserUser.read(1,User.class));
 
     }
 }

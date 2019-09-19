@@ -28,8 +28,6 @@ public class AddressDataSet {
 
     @Override
     public String toString() {
-        return "ru.otus.homework.model.AddressDataSet{" +
-                "street='" + street + '\'' +
-                '}';
+        return street;
     }
 }
