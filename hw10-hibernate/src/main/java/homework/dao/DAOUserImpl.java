@@ -47,8 +47,9 @@ public class DAOUserImpl<T> implements DAOUser<T> {
     public <T> T read(long id, Class<T> clazz) {
         T result;
         try (Session session = sessionFactory.openSession()) {
-            System.out.println(session.load(clazz, id));
-            return session.load(clazz, id);
+            T temp=session.get(clazz, id);
+            session.close();
+            return temp;
         }
     }
 }

@@ -1,6 +1,7 @@
 package homework.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "address_data")
@@ -29,5 +30,18 @@ public class AddressDataSet {
     @Override
     public String toString() {
         return street;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AddressDataSet that = (AddressDataSet) o;
+        return street.equals(that.street);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(street);
     }
 }

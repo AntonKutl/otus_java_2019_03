@@ -11,19 +11,22 @@ public class Main {
 
         User user1=new User();
         AddressDataSet addressDataSet=new AddressDataSet();
-        PhoneDataSet phoneDataSet=new PhoneDataSet();
-        phoneDataSet.setNumber("123456789");
-        addressDataSet.setStreet("A1");
+        PhoneDataSet phoneDataSet1=new PhoneDataSet();
+        PhoneDataSet phoneDataSet2=new PhoneDataSet();
+        phoneDataSet1.setNumber("11111");
+        phoneDataSet2.setNumber("22222");
+        addressDataSet.setStreet("Ленина");
         user1.setId(1);
         user1.setName("Anton");
         user1.setAge(30);
         user1.setAddress(addressDataSet);
-        user1.setPhoneDataSet(phoneDataSet);
+        user1.setPhoneDataSet(phoneDataSet1);
+        user1.setPhoneDataSet(phoneDataSet2);
         DAOUser daoUserUser =new DAOUserImpl();
         daoUserUser.save(user1);
-        //daoUserUser.read(1,User.class);
         System.out.println("------------");
         System.out.println(daoUserUser.read(1,User.class));
+
 
     }
 }

@@ -2,7 +2,7 @@ package homework.model;
 
 import javax.persistence.*;
 @Entity
-@Table(name = "phone_data_set")
+@Table(name = "phone_data")
 public class PhoneDataSet {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -10,7 +10,7 @@ public class PhoneDataSet {
     private long id;
     @Column(name = "number")
     private String number;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user")
     private User user;
 

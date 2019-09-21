@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "user")
@@ -19,7 +20,7 @@ public class User {
 
     private AddressDataSet address;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<PhoneDataSet> phoneDataSet=new ArrayList<>();
 
     public List<PhoneDataSet> getPhoneDataSet() {
@@ -71,5 +72,21 @@ public class User {
                 ", address=" + address +
                 ", phoneDataSet=" + Arrays.toString(phoneDataSet.toArray()) +
                 '}';
+    }
+
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return age == user.age &&
+                name.equals(user.name) &&
+                address.equals(user.address) &&
+                phoneDataSet.equals(user.phoneDataSet);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, age, address, phoneDataSet);
     }
 }
