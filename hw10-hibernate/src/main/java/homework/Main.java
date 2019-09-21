@@ -1,8 +1,10 @@
-import ru.otus.homework.dao.DAOUser;
-import ru.otus.homework.dao.DAOUserImpl;
-import ru.otus.homework.model.AddressDataSet;
-import ru.otus.homework.model.PhoneDataSet;
-import ru.otus.homework.model.User;
+package homework;
+
+import homework.dao.DAOUser;
+import homework.dao.DAOUserImpl;
+import homework.model.AddressDataSet;
+import homework.model.PhoneDataSet;
+import homework.model.User;
 
 public class Main {
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package ru.otus.homework.dao;
+package homework.dao;
 
 public interface DAOUser<T> {
     //void create(T objectData);

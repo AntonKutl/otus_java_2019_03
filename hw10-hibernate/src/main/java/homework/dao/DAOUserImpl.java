@@ -1,4 +1,4 @@
-package ru.otus.homework.dao;
+package homework.dao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -7,9 +7,9 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import ru.otus.homework.model.AddressDataSet;
-import ru.otus.homework.model.PhoneDataSet;
-import ru.otus.homework.model.User;
+import homework.model.AddressDataSet;
+import homework.model.PhoneDataSet;
+import homework.model.User;
 
 public class DAOUserImpl<T> implements DAOUser<T> {
     private SessionFactory sessionFactory;
