@@ -8,6 +8,7 @@ import homework.model.User;
 
 public class Main {
     public static void main(String[] args) {
+
         User user1=new User();
         AddressDataSet addressDataSet=new AddressDataSet();
         PhoneDataSet phoneDataSet=new PhoneDataSet();
