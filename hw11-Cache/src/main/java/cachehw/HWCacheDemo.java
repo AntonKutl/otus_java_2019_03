@@ -15,6 +15,7 @@ public class HWCacheDemo {
     }
 
     private void demo() {
+
         HwCache<Integer, Integer> cache = new MyCache<>();
         HwListener<Integer, Integer> listener =
                 (key, value, action) -> logger.info("key:{}, value:{}, action: {}",  key, value, action);
