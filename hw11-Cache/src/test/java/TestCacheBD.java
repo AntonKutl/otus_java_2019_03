@@ -1,4 +1,4 @@
-import DbServise.dao.SlowDataSrc;
+import DbServise.dao.SlowDB;
 import cachehw.HwCache;
 import cachehw.HwListener;
 import cachehw.MyCache;
@@ -16,7 +16,7 @@ public class TestCacheBD {
     @Test
     @DisplayName("работать быстрее  СУБД")
     void testBD() throws InterruptedException {
-        SlowDataSrc db=new SlowDataSrc();
+        SlowDB db=new SlowDB();
         HwCache<Integer, User> cache = new MyCache<>();
         HwListener<Integer, User> listener =
                 (key, value, action) -> logger.info("key:{}, value:{}, action: {}",  key, value, action);
