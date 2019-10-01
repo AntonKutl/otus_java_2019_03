@@ -8,8 +8,8 @@ import java.util.*;
  * created on 14.12.18.
  */
 public class MyCache<K, V> implements HwCache<K, V> {
-    List<WeakReference<HwListener>> listListener = new ArrayList<>();
-    Map<K, V> mapCache = new WeakHashMap<>();
+    private List<WeakReference<HwListener>> listListener = new ArrayList<>();
+    private Map<K, V> mapCache = new WeakHashMap<>();
     public void put(K key, V value) {
         mapCache.put((K) new WeakReference<>(key), value);
         listListener.stream().forEach((s) -> s.get().notify(key, value, "put"));
@@ -41,6 +41,16 @@ public class MyCache<K, V> implements HwCache<K, V> {
 
     public int size() {
         return mapCache.size();
+    }
+
+    public boolean isKey(K key){
+        Set<WeakReference> set= (Set<WeakReference>) mapCache.keySet();
+        for (WeakReference temp:set) {
+            if (temp.get()==key){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void addListener(HwListener listener) {
