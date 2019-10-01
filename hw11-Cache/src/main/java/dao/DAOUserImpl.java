@@ -40,15 +40,19 @@ public class DAOUserImpl<T> implements DAOUser<T> {
 
     @Override
     public <T> T read(long id, Class<T> clazz) {
+        try (Session session = sessionFactory.openSession()) {
+            T temp = session.get(clazz, id);
+            session.close();
+            return temp;
+        }
+
+    }
+
+    public <T> T readCache(long id, Class<T> clazz) {
         if (myCache.isKey(id)) {
             return (T) myCache.get(id);
-        } else {
-            try (Session session = sessionFactory.openSession()) {
-                T temp = session.get(clazz, id);
-                session.close();
-                return temp;
-            }
         }
+        return null;
     }
 }
 

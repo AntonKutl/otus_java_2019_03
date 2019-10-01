@@ -18,6 +18,10 @@ public class Main {
             System.out.println(i+" "+daoUserUser.read(i,User.class));
         }
 
+        for (int i = 1; i <100 ; i++) {
+            System.out.println(i+" "+((DAOUserImpl) daoUserUser).readCache(i,User.class));
+        }
+
 
 
     }
