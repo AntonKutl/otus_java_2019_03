@@ -1,6 +1,5 @@
 package dao;
 
-import cachehw.HWCacheDemo;
 import cachehw.MyCache;
 import model.User;
 import org.hibernate.Session;
@@ -13,13 +12,13 @@ import org.hibernate.cfg.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DAOUserImpl<T> implements DAOUser<T> {
+public class DAOUserCacheImpl<T> implements DAOUser<T> {
     private SessionFactory sessionFactory;
     private StandardServiceRegistry serviceRegistry;
     private MyCache myCache = new MyCache();
-    private static final Logger logger = LoggerFactory.getLogger(DAOUserImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(DAOUserCacheImpl.class);
 
-    public DAOUserImpl() {
+    public DAOUserCacheImpl() {
         logger.info("Создание сессии");
         Configuration configuration = new Configuration()
                 .configure("hibernate.cfg.xml");
@@ -47,22 +46,32 @@ public class DAOUserImpl<T> implements DAOUser<T> {
     @Override
     public <T> T read(long id, Class<T> clazz) {
 
+
+        if (myCache.isKey(id)) {
+            logger.info("Четение из кэша ключа:{}, и значения:{}", id, myCache.get(id));
+            return (T) myCache.get(id);
+        } else {
+            try (Session session = sessionFactory.openSession()) {
+                T temp = session.get(clazz, id);
+                session.close();
+                logger.info("Четение из БД ключа:{}, и значения:{}", id, temp);
+                return temp;
+            }
+        }
+    }
+
+    //метод для теста
+    public <T> T readBD(long id, Class<T> clazz) {
+
         try (Session session = sessionFactory.openSession()) {
+
             T temp = session.get(clazz, id);
             session.close();
-            logger.info("Четение из БД ключа:{}, и значения:{}",id,temp);
+            logger.info("Четение из БД ключа:{}, и значения:{}", id, temp);
             return temp;
         }
-
     }
 
-    public <T> T readCache(long id, Class<T> clazz) {
-        if (myCache.isKey(id)) {
-            logger.info("Четение из кэша ключа:{}, и значения:{}",id,myCache.get(id));
-            return (T) myCache.get(id);
-        }
-        return null;
-    }
 }
 
 

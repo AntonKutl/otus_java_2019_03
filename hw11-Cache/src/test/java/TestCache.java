@@ -20,7 +20,8 @@ public class TestCache {
                 (key, value, action) -> logger.info("key:{}, value:{}, action: {}",  key, value, action);
         cache.addListener(listener);
         for (int i = 0; i <100; i++) {
-            cache.put(i,new User());
+            Integer temp=new Integer(i);
+            cache.put(temp,new User());
         }
         System.gc();
         Thread.sleep(100);

@@ -8,34 +8,21 @@ import java.util.*;
  * created on 14.12.18.
  */
 public class MyCache<K, V> implements HwCache<K, V> {
-    private List<WeakReference<HwListener>> listListener = new ArrayList<>();
-    private Map<K, V> mapCache = new WeakHashMap<>();
+    private final List<WeakReference<HwListener>> listListener = new ArrayList<>();
+    private final Map<K, V> mapCache = new WeakHashMap<>();
     public void put(K key, V value) {
-        mapCache.put((K) new WeakReference<>(key), value);
+        mapCache.put(key, value);
         listListener.stream().forEach((s) -> s.get().notify(key, value, "put"));
     }
 
     public void remove(K key) {
-        Set<WeakReference> set= (Set<WeakReference>) mapCache.keySet();
-        for (WeakReference temp:set) {
-            if (temp.get()==key){
-                listListener.stream().forEach((s) -> s.get().notify(key, mapCache.get(temp), "remove"));
-                mapCache.remove(temp);
-                break;
-            }
-        }
+        listListener.stream().forEach((s) -> s.get().notify(key, mapCache.get(key), "remove"));
+        mapCache.remove(key);
     }
 
     public V get(K key) {
-        Set<WeakReference> set= (Set<WeakReference>) mapCache.keySet();
-        V value = null;
-        for (WeakReference temp:set) {
-            if (temp.get()==key){
-
-                value=mapCache.get(temp);
-                listListener.stream().forEach((s) -> s.get().notify(key, mapCache.get(temp), "get"));
-            }
-        }
+        V value=mapCache.get(key);
+        listListener.stream().forEach((s) -> s.get().notify(key, mapCache.get(key), "get"));
         return value;
     }
 
@@ -44,9 +31,9 @@ public class MyCache<K, V> implements HwCache<K, V> {
     }
 
     public boolean isKey(K key){
-        Set<WeakReference> set= (Set<WeakReference>) mapCache.keySet();
-        for (WeakReference temp:set) {
-            if (temp.get()==key){
+        Set<K> set=  mapCache.keySet();
+        for (K temp:set) {
+            if (temp==key){
                 return true;
             }
         }

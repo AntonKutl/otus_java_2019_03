@@ -1,8 +1,6 @@
 
-import cachehw.HwCache;
-import cachehw.MyCache;
 import dao.DAOUser;
-import dao.DAOUserImpl;
+import dao.DAOUserCacheImpl;
 import model.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -17,24 +15,22 @@ public class TestCacheBD {
     @Test
     @DisplayName("работать быстрее  СУБД")
     void testBD()  {
-        DAOUser daoUserUser =new DAOUserImpl();
+        DAOUser daoUserUser =new DAOUserCacheImpl();
         for (int i = 1; i <100 ; i++) {
             User temp=new User();
             temp.setId(i);
-            System.out.println(i);
             daoUserUser.save(temp);
-            System.out.println(i);
         }
         logger.info("Измерение времени извлеченя данных из БД");
         long startBD = System.currentTimeMillis();
         for (int i = 1; i <100 ; i++) {
-            daoUserUser.read(i,User.class);
+            ((DAOUserCacheImpl) daoUserUser).readBD(i,User.class);
         }
         long timeBD=System.currentTimeMillis()-startBD;
         logger.info("Измерение времени извлеченя данных из кеша");
         long startCache = System.currentTimeMillis();
         for (int i = 1; i <100 ; i++) {
-            ((DAOUserImpl) daoUserUser).readCache(i,User.class);
+        daoUserUser.read(i,User.class);
         }
         long timeCache=System.currentTimeMillis()-startCache;
         logger.info("Кэш быстрее на:{}",timeBD-timeCache);
