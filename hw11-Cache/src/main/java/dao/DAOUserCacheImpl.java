@@ -13,9 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class DAOUserCacheImpl<T> implements DAOUser<T> {
-    private SessionFactory sessionFactory;
-    private StandardServiceRegistry serviceRegistry;
-    private MyCache myCache = new MyCache();
+    private final SessionFactory sessionFactory;
+    private final StandardServiceRegistry serviceRegistry;
+    private final MyCache myCache = new MyCache<>();
     private static final Logger logger = LoggerFactory.getLogger(DAOUserCacheImpl.class);
 
     public DAOUserCacheImpl() {
@@ -45,11 +45,10 @@ public class DAOUserCacheImpl<T> implements DAOUser<T> {
 
     @Override
     public <T> T read(long id, Class<T> clazz) {
-
-
         if (myCache.isKey(id)) {
-            logger.info("Четение из кэша ключа:{}, и значения:{}", id, myCache.get(id));
-            return (T) myCache.get(id);
+            T temp= (T) myCache.get(id);
+            logger.info("Четение из кэша ключа:{}, и значения:{}", id, temp);
+            return temp;
         } else {
             try (Session session = sessionFactory.openSession()) {
                 T temp = session.get(clazz, id);
@@ -59,19 +58,6 @@ public class DAOUserCacheImpl<T> implements DAOUser<T> {
             }
         }
     }
-
-    //метод для теста
-    public <T> T readBD(long id, Class<T> clazz) {
-
-        try (Session session = sessionFactory.openSession()) {
-
-            T temp = session.get(clazz, id);
-            session.close();
-            logger.info("Четение из БД ключа:{}, и значения:{}", id, temp);
-            return temp;
-        }
-    }
-
 }
 
 

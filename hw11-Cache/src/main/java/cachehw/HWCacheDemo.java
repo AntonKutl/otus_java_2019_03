@@ -23,8 +23,7 @@ public class HWCacheDemo {
         System.out.println("GC");
         System.gc();
         Thread.sleep(1000);
-
-        System.out.println(((MyCache<Integer, Integer>) cache).size());
+        logger.info(String.valueOf(((MyCache<Integer, Integer>) cache).size()));
         cache.remove(1);
         cache.removeListener(listener);
     }

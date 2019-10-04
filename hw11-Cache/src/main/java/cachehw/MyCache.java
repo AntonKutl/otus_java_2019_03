@@ -31,13 +31,7 @@ public class MyCache<K, V> implements HwCache<K, V> {
     }
 
     public boolean isKey(K key){
-        Set<K> set=  mapCache.keySet();
-        for (K temp:set) {
-            if (temp==key){
-                return true;
-            }
-        }
-        return false;
+        return mapCache.containsKey(key);
     }
 
     public void addListener(HwListener listener) {

@@ -1,3 +1,4 @@
+package test;
 
 import dao.DAOUser;
 import dao.DAOUserCacheImpl;
@@ -23,8 +24,8 @@ public class TestCacheBD {
         }
         logger.info("Измерение времени извлеченя данных из БД");
         long startBD = System.currentTimeMillis();
-        for (int i = 1; i <100 ; i++) {
-            ((DAOUserCacheImpl) daoUserUser).readBD(i,User.class);
+        for (int i = 100; i <200 ; i++) {
+            daoUserUser.read(i,User.class);
         }
         long timeBD=System.currentTimeMillis()-startBD;
         logger.info("Измерение времени извлеченя данных из кеша");
