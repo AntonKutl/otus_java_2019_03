@@ -12,17 +12,29 @@ public class MyCache<K, V> implements HwCache<K, V> {
     private final Map<K, V> mapCache = new WeakHashMap<>();
     public void put(K key, V value) {
         mapCache.put(key, value);
-        listListener.stream().forEach((s) -> (Objects.requireNonNull(s.get())).notify(key, value, "put"));
+        for (WeakReference<HwListener<K,V>> temp:listListener) {
+            if (temp.get()!=null){
+                temp.get().notify(key, mapCache.get(key), "put");
+            }
+        }
     }
 
     public void remove(K key) {
-        listListener.stream().forEach((s) -> Objects.requireNonNull(s.get()).notify(key, mapCache.get(key), "remove"));
+        for (WeakReference<HwListener<K,V>> temp:listListener) {
+            if (temp.get()!=null){
+                temp.get().notify(key, mapCache.get(key), "remove");
+            }
+        }
         mapCache.remove(key);
     }
 
     public V get(K key) {
         V value=mapCache.get(key);
-        listListener.stream().forEach((s) -> Objects.requireNonNull(s.get()).notify(key, mapCache.get(key), "get"));
+        for (WeakReference<HwListener<K,V>> temp:listListener) {
+            if (temp.get()!=null){
+                temp.get().notify(key, mapCache.get(key), "get");
+            }
+        }
         return value;
     }
 
