@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 public class DAOUserCacheImpl<T> implements DAOUser<T> {
     private final SessionFactory sessionFactory;
     private final StandardServiceRegistry serviceRegistry;
-    private final MyCache myCache = new MyCache<>();
+    private final MyCache<String,User> myCache = new MyCache<>();
     private static final Logger logger = LoggerFactory.getLogger(DAOUserCacheImpl.class);
 
     public DAOUserCacheImpl() {
@@ -34,7 +34,7 @@ public class DAOUserCacheImpl<T> implements DAOUser<T> {
 
     public void save(User objectData) {
         logger.info("Сохранение данных в базу данных и кэш");
-        myCache.put(objectData.getId(), objectData);
+        myCache.put(String.valueOf(objectData.getId()), objectData);
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.save(objectData);
@@ -45,8 +45,8 @@ public class DAOUserCacheImpl<T> implements DAOUser<T> {
 
     @Override
     public <T> T read(long id, Class<T> clazz) {
-        if (myCache.isKey(id)) {
-            T temp= (T) myCache.get(id);
+        if (myCache.isKey(String.valueOf(id))) {
+            T temp= (T) myCache.get(String.valueOf(id));
             logger.info("Четение из кэша ключа:{}, и значения:{}", id, temp);
             return temp;
         } else {

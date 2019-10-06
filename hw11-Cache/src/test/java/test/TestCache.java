@@ -16,16 +16,15 @@ public class TestCache {
     @Test
     @DisplayName("должен сбрасываться при запуске GC")
      void testGC() throws InterruptedException {
-        HwCache<Integer, User> cache = new MyCache<>();
-        HwListener<Integer, User> listener =
+        HwCache<String, User> cache = new MyCache<>();
+        HwListener<String, User> listener =
                 (key, value, action) -> logger.info("key:{}, value:{}, action: {}",  key, value, action);
         cache.addListener(listener);
         for (int i = 0; i <100; i++) {
-            Integer temp=new Integer(i);
-            cache.put(temp,new User());
+            cache.put(String.valueOf(i),new User());
         }
         System.gc();
         Thread.sleep(100);
-        Assertions.assertEquals(0,((MyCache<Integer, User>) cache).size());
+        Assertions.assertEquals(0, ((MyCache<String, User>) cache).size());
     }
 }
