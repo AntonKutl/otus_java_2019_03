@@ -1,0 +1,32 @@
+
+
+<form method="post" name="addUser">
+    <input type = "hidden" name = "form" value = "add">
+    Имя: <input type="text" name="name" /><br />
+    Возраст: <input type="number" name="age" /><br />
+    Телефон: <input type="text" name="phone" /><br />
+    Адресс: <input type="text" name="address" /><br />
+    <input type="submit" name="add" value="Создать пользователя" />
+</form>
+
+<form method="post" name="viewUser">
+    <input type = "hidden" name = "form" value = "view">
+    <input type="submit" name="view" value="Получить список пользователей" />
+</form>
+<h1>Cписок пользователей</h1>
+
+<#if listUser??>
+<ul>
+    <#list listUser as item >
+    <li><tr><td>Имя: ${item.name}   |  <td>Взраст: ${item.age}   |  <td>Телефон: ${item.phone}   |  Адресс: ${item.address}</li>
+    </#list>
+</ul>
+<#else>
+Сохраненных пользователей не существует
+</#if>
+
+
+
+
+
+
