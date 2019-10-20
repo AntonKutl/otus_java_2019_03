@@ -13,22 +13,23 @@ public class LoginServlet extends HttpServlet {
     private String name;
     private String password;
 
-    private static final String TIMER_PAGE_TEMPLATE = "login.html";
+    private final String page;
 
     private final TemplateProcessor templateProcessor;
     
     
 
-    public LoginServlet(String name, String password)  {
+    public LoginServlet(String name, String password,String page)  {
         this.name = name;
         this.password = password;
+        this.page=page;
         this.templateProcessor = new TemplateProcessor();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/html;charset=utf-8");
-        resp.getWriter().println(templateProcessor.getPage(TIMER_PAGE_TEMPLATE,null));
+        resp.getWriter().println(templateProcessor.getPage(page,null));
         resp.setStatus(HttpServletResponse.SC_OK);
     }
 

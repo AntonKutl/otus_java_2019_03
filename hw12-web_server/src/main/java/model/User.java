@@ -5,7 +5,19 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "user")
+
+
+
 public class User {
+    public User() {
+    }
+    public User(String name, int age, String address, String phone) {
+        this.name = name;
+        this.age = age;
+        this.address = address;
+        this.phone = phone;
+    }
+
     @Id
     @Column(name = "name")
     private String name;
@@ -15,6 +27,8 @@ public class User {
     private String address;
     @Column(name = "phone")
     private String phone;
+
+
 
     public String getName() {
         return name;
