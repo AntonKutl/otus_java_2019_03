@@ -2,11 +2,8 @@ package model;
 
 import javax.persistence.*;
 
-
 @Entity
 @Table(name = "user")
-
-
 
 public class User {
     public User() {
@@ -27,8 +24,6 @@ public class User {
     private String address;
     @Column(name = "phone")
     private String phone;
-
-
 
     public String getName() {
         return name;
