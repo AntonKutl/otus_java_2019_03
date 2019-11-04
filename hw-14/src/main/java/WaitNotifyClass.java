@@ -19,14 +19,15 @@ public class WaitNotifyClass {
         synchronized (monitor) {
             StringBuilder str=new StringBuilder("Поток "+ flag+":");
             try {
+                int count=0;
 
-                for (int i = 1; i < 19; i++) {
+                for (int i = 1; i < 20; i++) {
                     Thread.sleep(350);
                     while (!nameTread.equals(flag)) {
                         monitor.wait();
                     }
-
-                    str.append(i);
+                    count=i<11?i:count-1;
+                    str.append(count);
                     System.out.println(str);
                     nameTread = nameTread.equals("one")?"two":"one";
                     monitor.notify();
