@@ -1,35 +1,37 @@
+package homework;
 
 public class WaitNotifyClass {
     private final Object monitor = new Object();
-    private volatile String nameTread = "one";// блокировка потока по имени, с boolean чередование не получиться
+    private volatile int numberTread = 1;// блокировка потока по имени, с boolean чередование не получиться
+    private static final int STOP_TIME=350;
 
     public static void main(String[] args) {
         WaitNotifyClass w = new WaitNotifyClass();
         Thread oneThread = new Thread(() -> {
-            w.print("one");
+            w.print(1);
         });
         Thread twoThread = new Thread(() -> {
-            w.print("two");
+            w.print(2);
         });
         oneThread.start();
         twoThread.start();
     }
 
-    public void print(String flag) {
+    public void print(int number) {
         synchronized (monitor) {
-            StringBuilder str=new StringBuilder("Поток "+ flag+":");
+            StringBuilder str=new StringBuilder("Поток "+ number+":");
             try {
                 int count=0;
 
                 for (int i = 1; i < 20; i++) {
-                    Thread.sleep(350);
-                    while (!nameTread.equals(flag)) {
+                    Thread.sleep(STOP_TIME);
+                    while (!(numberTread ==number)) {
                         monitor.wait();
                     }
                     count=i<11?i:count-1;
                     str.append(count);
                     System.out.println(str);
-                    nameTread = nameTread.equals("one")?"two":"one";
+                    numberTread = numberTread==1?2:1;
                     monitor.notify();
                 }
             } catch (InterruptedException e) {
