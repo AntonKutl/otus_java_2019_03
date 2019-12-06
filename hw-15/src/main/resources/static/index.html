@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>homeWork-15</title>
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/app.js"></script>
+</head>
+<body onload="connect()">
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+    enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+<div id="main-content" class="container">
+
+    <form class="form-inline">
+        <div>
+            <label for="name">Name</label>
+            <input type="text" id="name">
+
+        </div>
+        <div>
+            <label for="age">Age</label>
+            <input type="number" id="age">
+        </div>
+        <div>
+            <label for="phone">Phone</label>
+            <input type="text" id="phone">
+        </div>
+        <div>
+            <label for="address">Address</label>
+            <input type="text" id="address">
+        </div>
+        <button id="send" onclick="sendUser()">Add user</button>
+    </form>
+    <div>
+        <button id="view" onclick="viewUser()">View users</button>
+    </div>
+    <div id="placeholder"></div>
+</div>
+</body>
+</html>
