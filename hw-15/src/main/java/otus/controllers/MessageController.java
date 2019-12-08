@@ -21,8 +21,11 @@ public class MessageController {
     private FrontendService frontendService;
 
     @MessageMapping("/addUser")
-    public void addUser(User user) {
-        frontendService.addUser(user);
+    @SendTo("/topic/response/addUser")
+    public String addUser(User user) {
+        String answer=frontendService.addUser(user);
+        logger.info("Ответ пользователю "+answer);
+        return answer;
     }
 
     @MessageMapping("/viewUser")

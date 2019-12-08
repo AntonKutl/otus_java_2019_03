@@ -17,13 +17,22 @@ const connect = () => {
                 'address': $("#address").val(),
             };
             console.log(sendUser);
+
             stompClient.send("/app/addUser", {}, JSON.stringify(user));
+
+            stompClient.subscribe('/topic/response/addUser', function(response) {
+                       			var data = JSON.parse(response.body);
+                       			alert(data);
+            });
+
+
     }
 
 
     function viewUser(){
             stompClient.send("/app/viewUser", {},null);
             stompClient.subscribe('/topic/response/viewUser', function(response) {
+
             			var data = JSON.parse(response.body);
             			var list = '';
             			console.log(data);

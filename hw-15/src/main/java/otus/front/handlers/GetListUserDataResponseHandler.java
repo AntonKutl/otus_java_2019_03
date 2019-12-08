@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class GetUserDataResponseHandler implements RequestHandler {
-  private static final Logger logger = LoggerFactory.getLogger(GetUserDataResponseHandler.class);
+public class GetListUserDataResponseHandler implements RequestHandler {
+  private static final Logger logger = LoggerFactory.getLogger(GetListUserDataResponseHandler.class);
 
   private final FrontendService frontendService;
 
-  public GetUserDataResponseHandler(FrontendService frontendService) {
+  public GetListUserDataResponseHandler(FrontendService frontendService) {
     this.frontendService = frontendService;
   }
 
@@ -26,16 +26,8 @@ public class GetUserDataResponseHandler implements RequestHandler {
   public Optional<Message> handle(Message msg) {
     logger.info("new message:{}", msg);
     try {
-
-      Object object = Serializers.deserialize(msg.getPayload(), Object.class);
-      if (object.getClass().equals(String.class)) {
-        logger.info(object.toString());
-      } else {
-        List<User> list = Serializers.deserialize(msg.getPayload(), ArrayList.class);
         UUID sourceMessageId = msg.getSourceMessageId().orElseThrow(() -> new RuntimeException("Not found sourceMsg for message:" + msg.getId()));
-        frontendService.addAnswer(sourceMessageId,list);
-      }
-
+        frontendService.addAnswer(sourceMessageId,msg);
     } catch (Exception ex) {
       logger.error("msg:" + msg, ex);
     }
