@@ -7,6 +7,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import otus.front.FrontendService;
+import otus.model.TextMessage;
 import otus.model.User;
 
 import java.util.List;
@@ -16,16 +17,15 @@ import java.util.List;
 public class MessageController {
     private static final Logger logger = LoggerFactory.getLogger(MessageController.class);
 
-
     @Autowired
     private FrontendService frontendService;
 
     @MessageMapping("/addUser")
     @SendTo("/topic/response/addUser")
-    public String addUser(User user) {
+    public TextMessage addUser(User user) {
         String answer=frontendService.addUser(user);
-        logger.info("Ответ пользователю "+answer);
-        return answer;
+        logger.info(answer);
+        return new TextMessage(answer);
     }
 
     @MessageMapping("/viewUser")

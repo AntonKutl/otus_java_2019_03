@@ -25,8 +25,14 @@ public class SaveUserDataRequestHandler implements RequestHandler {
     @Override
     public Optional<Message> handle(Message msg) {
         User user = Serializers.deserialize(msg.getPayload(), User.class);
-        dbService.save(user);
-        logger.info("User save in database");
-        return Optional.of(new Message(msg.getTo(), msg.getFrom(), Optional.of(msg.getId()), MessageType.USER_DATA.getValue(), Serializers.serialize("Пользователь добавлен")));
+        try {
+            dbService.save(user);
+            logger.info("User save in database");
+            return Optional.of(new Message(msg.getTo(), msg.getFrom(), Optional.of(msg.getId()), MessageType.USER_DATA.getValue(), Serializers.serialize("Пользователь сохранен")));
+        }catch (Exception exp){
+            return Optional.of(new Message(msg.getTo(), msg.getFrom(), Optional.of(msg.getId()), MessageType.USER_DATA.getValue(), Serializers.serialize("Ошибка при сохранение пользователя")));
+
+        }
+
     }
 }

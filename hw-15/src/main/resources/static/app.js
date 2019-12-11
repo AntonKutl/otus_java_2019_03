@@ -22,12 +22,10 @@ const connect = () => {
 
             stompClient.subscribe('/topic/response/addUser', function(response) {
                        			var data = JSON.parse(response.body);
-                       			alert(data);
+                       			console.log(data.message);
+                       			alert(data.message);
             });
-
-
     }
-
 
     function viewUser(){
             stompClient.send("/app/viewUser", {},null);
@@ -44,4 +42,5 @@ const connect = () => {
                         document.getElementById("placeholder").innerHTML=output;
             });
     }
+
 
