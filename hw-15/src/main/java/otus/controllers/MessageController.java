@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import otus.front.FrontendService;
 import otus.model.TextMessage;
@@ -19,19 +20,29 @@ public class MessageController {
 
     @Autowired
     private FrontendService frontendService;
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     @MessageMapping("/addUser")
-    @SendTo("/topic/response/addUser")
-    public TextMessage addUser(User user) {
-        String answer=frontendService.addUser(user);
-        logger.info(answer);
-        return new TextMessage(answer);
+    public void addUser(User user) {
+        frontendService.addUser(user);
     }
 
     @MessageMapping("/viewUser")
-    @SendTo("/topic/response/viewUser")
-    public List <User>  viewUser() {
-        List<User> users = frontendService.viewUser();
-        return  users;
+    public void viewUser() {
+        frontendService.viewUser();
     }
+
+    public void addUserResponse(String response) {
+        logger.info(response);
+        messagingTemplate.convertAndSend("/topic/response/addUser",new TextMessage(response));
+    }
+
+    public void viewUserResponse(List<User> list) {
+        logger.info(list.toString());
+        messagingTemplate.convertAndSend("/topic/response/viewUser",list);
+    }
+
+
+
 }
