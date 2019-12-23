@@ -14,6 +14,7 @@
         <module>hw01-maven</module>
         <module>hw03-reflection-annotations</module>
         <module>hw04-bytecodes</module>
+        <module>hw-16</module>
     </modules>
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
