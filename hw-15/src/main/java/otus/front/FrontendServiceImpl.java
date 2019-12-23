@@ -3,11 +3,13 @@ package otus.front;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import otus.common.Serializers;
 import otus.controllers.MessageController;
 import otus.messagesystem.Message;
 import otus.messagesystem.MessageType;
 import otus.messagesystem.MsClient;
+import otus.model.TextMessage;
 import otus.model.User;
 
 import java.util.*;
@@ -20,8 +22,9 @@ public class FrontendServiceImpl implements FrontendService {
     private final MsClient msClient;
     private final String databaseServiceClientName;
 
+
     @Autowired
-    MessageController messageController;
+    private SimpMessagingTemplate messagingTemplate;
 
     public FrontendServiceImpl(MsClient msClient, String databaseServiceClientName) {
         this.msClient = msClient;
@@ -41,13 +44,15 @@ public class FrontendServiceImpl implements FrontendService {
     }
 
     public void addAnswer(UUID uuid, Message msg) {
-        if (msg.getType()==MessageType.USER_DATA.getValue()){
-            messageController.addUserResponse(Serializers.deserialize(msg.getPayload(), String.class));
+        if (msg.getType() == MessageType.USER_DATA.getValue()) {
+            messagingTemplate.convertAndSend("/topic/response/addUser", new TextMessage(Serializers.deserialize(msg.getPayload(), String.class)));
 
-        }if (msg.getType()==MessageType.SYSTEM_MESSAGE.getValue()){
-            messageController.viewUserResponse(Serializers.deserialize(msg.getPayload(), ArrayList.class));}
-        consumerMap.put(uuid, msg);
-        logger.info("Add in Map key:" + uuid + " value" + msg);
+        }
+        if (msg.getType() == MessageType.SYSTEM_MESSAGE.getValue()) {
+            messagingTemplate.convertAndSend("/topic/response/viewUser", Serializers.deserialize(msg.getPayload(), ArrayList.class));
+            consumerMap.put(uuid, msg);
+            logger.info("Add in Map key:" + uuid + " value" + msg);
+        }
+
     }
-
 }

@@ -20,8 +20,6 @@ public class MessageController {
 
     @Autowired
     private FrontendService frontendService;
-    @Autowired
-    private SimpMessagingTemplate messagingTemplate;
 
     @MessageMapping("/addUser")
     public void addUser(User user) {
@@ -32,17 +30,4 @@ public class MessageController {
     public void viewUser() {
         frontendService.viewUser();
     }
-
-    public void addUserResponse(String response) {
-        logger.info(response);
-        messagingTemplate.convertAndSend("/topic/response/addUser",new TextMessage(response));
-    }
-
-    public void viewUserResponse(List<User> list) {
-        logger.info(list.toString());
-        messagingTemplate.convertAndSend("/topic/response/viewUser",list);
-    }
-
-
-
 }
