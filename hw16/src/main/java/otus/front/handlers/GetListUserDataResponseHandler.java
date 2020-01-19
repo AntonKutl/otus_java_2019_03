@@ -35,6 +35,7 @@ public class GetListUserDataResponseHandler implements RequestHandler {
     }
 
     private void go(Object obj) {
+
         try {
             try (Socket clientSocket = new Socket(HOST, PORT)) {
                 ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
